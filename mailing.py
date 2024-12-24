@@ -23,10 +23,13 @@ def register_nlogin():
     passwd = input("Enter password:\n")
     hashed = bcrypt.hashpw(passwd.encode('utf-8'), bcrypt.gensalt())
     publickey = randbytes(16)
-    cur.execute("INSERT INTO user (username, passwd, publickey) VALUES (?, ?, ?)", (username, hashed, publickey))
-    con.commit()
-    print("Registered Successfully!")
-    login(username, passwd)
+    try:
+        cur.execute("INSERT INTO user (username, passwd, publickey) VALUES (?, ?, ?)", (username, hashed, publickey))
+        con.commit()
+        print("Registered Successfully!")
+        login(username, passwd)
+    except sqlite3.IntegrityError:
+        print("Registration Failed: Username already exists. Choose a unique username")
 
 
 def login(uname, password):
