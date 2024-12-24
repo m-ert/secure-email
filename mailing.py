@@ -20,6 +20,6 @@ def register_nlogin():
     res = cur.execute("SELECT * FROM user")
     print(res.fetchall())
 
-register_login()
+register_nlogin()
 
 #    login()
