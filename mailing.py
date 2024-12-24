@@ -11,7 +11,7 @@ from random import randbytes
 
 con = sqlite3.connect("mailing.db")
 cur = con.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS user(username VARCHAR(50), passwd VARBINARY(64), publickey VARBINARY(16))")
+cur.execute("CREATE TABLE IF NOT EXISTS user(username VARCHAR(50) UNIQUE, passwd VARBINARY(64), publickey VARBINARY(16))")
 con.commit()
 
 username = None
