@@ -14,6 +14,10 @@ cur = con.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS user(username VARCHAR(50), passwd VARBINARY(64), publickey VARBINARY(16))")
 con.commit()
 
+username = None
+passwd = None
+
+
 def register_nlogin():
     username = input("Enter username:\n")
     passwd = input("Enter password:\n")
@@ -25,16 +29,21 @@ def register_nlogin():
     login(username, passwd)
 
 
-def login(username, passwd):
-    cur.execute("SELECT passwd FROM user WHERE username = ?", (username,))
+def login(uname, password):
+    global username, passwd
+    cur.execute("SELECT passwd FROM user WHERE username = ?", (uname,))
     result = cur.fetchone()
-    if bcrypt.checkpw(passwd.encode('utf-8'), result[0]):
+    if bcrypt.checkpw(password.encode('utf-8'), result[0]):
+        username = uname
         print("Logged In Successfully!")
         return True
-    else: return False
+    else:
+        print("Login Failed :(")
+        return False
 
 #***
 register_nlogin()
+print(f"Current logged-in user: {username}")
 #***
 
 
